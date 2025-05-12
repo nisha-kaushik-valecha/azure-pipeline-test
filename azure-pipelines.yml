@@ -14,3 +14,15 @@ steps:
     pip install -r requirements.txt
     pytest
   displayName: 'Install dependencies and run tests'
+
+- script: |
+    mkdir -p $(Build.ArtifactStagingDirectory)
+    cp report.xml $(Build.ArtifactStagingDirectory)
+  displayName: 'Copy test report to artifact staging directory'
+  condition: 
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'test-results'
+    publishLocation: 'Container'
