@@ -1,5 +1,4 @@
 #checking CI
-# testing CD process
 trigger:
 - main
 
