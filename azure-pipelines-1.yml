@@ -1,0 +1,28 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.11'
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+    pytest > test_log.txt
+  displayName: 'Install dependencies and run tests'
+
+- script: |
+    mkdir -p $(Build.ArtifactStagingDirectory)
+    cp test_log.txt $(Build.ArtifactStagingDirectory)
+  displayName: 'Copy test log to artifact staging directory'
+
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'test-results'
+    publishLocation: 'Container'
