@@ -1,4 +1,3 @@
-#checking CI/CD
 trigger:
 - main
 
